@@ -15,9 +15,9 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name="edu.virginia.cs2110.SplashScreen"
-            android:label="@string/splash_screen"
-            >
+            android:name="edu.virginia.cs2110.ghosthunter.SplashScreenActivity"
+            android:noHistory="true" 
+            android:theme="@style/SplashTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
