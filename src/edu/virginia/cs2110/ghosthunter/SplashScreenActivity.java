@@ -2,8 +2,10 @@ package edu.virginia.cs2110.ghosthunter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class SplashScreenActivity extends Activity {
 
@@ -11,6 +13,10 @@ public class SplashScreenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
+		
+		TextView splashText = (TextView) findViewById(R.id.splash_text);
+		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/crochet_pattern.ttf");
+		splashText.setTypeface(font, Typeface.BOLD);
 		
 		// Execute AsyncLoad
 		new AsyncLoad().execute();
@@ -42,7 +48,7 @@ public class SplashScreenActivity extends Activity {
 		protected Void doInBackground(Void... voids) {
 			// Load necessary data into intent
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException ex) {
 				
 			}

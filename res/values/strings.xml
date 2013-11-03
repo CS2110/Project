@@ -4,6 +4,7 @@
     <string name="app_name">Ghost Hunter</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="splash_content_description">A ghost.</string>
+    <string name="developer_info">Developers: Jeffrey Cannon, Aki Gao, Gene Rhee, Adrian Dan</string>
+    <string name="school_info">University of Virginia CS 2110 Fall 2013</string>
 
 </resources>
