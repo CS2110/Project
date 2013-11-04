@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <color name="midnight">#FF202020</color>
+    <color name="midnight">#FF101010</color>
+    <color name="light">#FFF0F0F0</color>
     
 </resources>

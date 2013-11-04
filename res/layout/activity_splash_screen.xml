@@ -14,6 +14,7 @@
         android:drawablePadding="16dp"
         android:padding="16dp"
         android:text="@string/app_name"
+        android:textColor="@color/light"
         android:textSize="36sp"
         />
 

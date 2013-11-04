@@ -25,7 +25,7 @@ public class SplashScreenActivity extends Activity {
 	
 	private class AsyncLoad extends AsyncTask<Void, Void, Void> {
 	    
-		Intent intent;
+		private Intent intent;
 		
 		@Override
 	    protected void onPreExecute() {
@@ -37,7 +37,7 @@ public class SplashScreenActivity extends Activity {
 		protected Void doInBackground(Void... voids) {
 			// Load necessary data into intent
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(3000);
 			} catch (InterruptedException ex) {
 				
 			}
