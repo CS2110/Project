@@ -53,7 +53,8 @@ public class Ghost {
 				coordY = (coordY - speed * elapsedTime);
 			}
 		}
-	} 
+	}
+	
 	// Getters and Setters
 	public double getCoordX() {
 		return coordX;

@@ -21,17 +21,6 @@ public class SplashScreenActivity extends Activity {
 		// Execute AsyncLoad
 		new AsyncLoad().execute();
 		
-		/*
-		new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Create an Intent that will start the Menu-Activity.
-                Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                finish();
-            }
-        }, 3000);	
-        */	
 	}
 	
 	private class AsyncLoad extends AsyncTask<Void, Void, Void> {
