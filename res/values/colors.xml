@@ -3,5 +3,6 @@
     
     <color name="midnight">#FF101010</color>
     <color name="light">#FFF0F0F0</color>
+    <color name="transparent">#00000000</color>
     
 </resources>
