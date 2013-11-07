@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,8 +35,15 @@ public class MainActivity extends Activity {
 					animator.setDuration(ANIMATION_DURATION);
 					animator.start();
 				}
-				Intent intent = new Intent(MainActivity.this, TestActivity.class);
-				new AsyncWait(MainActivity.this, intent).execute(ANIMATION_DURATION - 100);
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						Intent intent = new Intent(MainActivity.this, TestActivity.class);
+						MainActivity.this.startActivity(intent);
+					}
+					
+				}, ANIMATION_DURATION - 100);
 			}
 		});
 	}
