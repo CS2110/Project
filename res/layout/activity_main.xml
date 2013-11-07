@@ -15,5 +15,17 @@
         android:padding="16dp"
         android:src="@drawable/title"
         android:contentDescription="@string/app_name" />
+    
+    <TextView
+        android:id="@+id/new_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/ghost_icon"
+        android:padding="16dp"
+        android:text="@string/new_game"
+        android:textColor="@color/light"
+        android:textSize="24sp"
+        />
 	
 </merge>

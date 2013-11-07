@@ -3,12 +3,13 @@ package edu.virginia.cs2110.ghosthunter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
 public class SplashScreenActivity extends Activity {
-
+	
+	public static final int DURATION = 2000;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -18,42 +19,9 @@ public class SplashScreenActivity extends Activity {
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/crochet_pattern.ttf");
 		splashText.setTypeface(font, Typeface.BOLD);
 		
-		// Execute AsyncLoad
-		new AsyncLoad().execute();
-		
+		// Execute AsyncWait
+		Intent intent = new Intent(this, MainActivity.class);
+		new AsyncWait(this, intent).execute(DURATION);
 	}
-	
-	private class AsyncLoad extends AsyncTask<Void, Void, Void> {
-	    
-		private Intent intent;
-		
-		@Override
-	    protected void onPreExecute() {
-			// Initial set-up
-			intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-		}
-
-		@Override
-		protected Void doInBackground(Void... voids) {
-			// Load necessary data into intent
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException ex) {
-				
-			}
-			return null;
-		}
-  
-		@Override
-		protected void onPostExecute(Void params) {
-			// Dismiss dialog and launch MainActivity
-			startActivity(intent);
-
-			// Close this activity
-			finish();
-		}
-
-	}
-
 	
 }

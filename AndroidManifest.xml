@@ -30,6 +30,11 @@
             android:theme="@style/HomeTheme" >
         </activity>
         
+        <activity
+            android:name=".TestActivity"
+            android:theme="@style/AppBaseTheme" >
+        </activity>
+        
     </application>
 
 </manifest>
