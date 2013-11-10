@@ -30,7 +30,7 @@ public class SplashScreenActivity extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+			intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
 		}
 
 		@Override

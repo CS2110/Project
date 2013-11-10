@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:gravity="center"
-    android:layout_margin="12dp" >
+    android:background="@color/midnight" >
 
     <TextView
         android:id="@+id/splash_text"
@@ -22,6 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:padding="2dp"
         android:text="@string/developer_info"
         android:textSize="12sp"
@@ -30,6 +32,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:padding="2dp"
         android:text="@string/school_info"
         android:textSize="12sp"

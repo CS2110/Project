@@ -23,7 +23,7 @@
     </style>
     
     <style name="SplashTheme" parent="android:Theme.NoTitleBar.Fullscreen" >
-        <item name="android:background">@color/midnight</item>
+        <!-- Add look and feel customizations here -->
     </style>
 
 </resources>

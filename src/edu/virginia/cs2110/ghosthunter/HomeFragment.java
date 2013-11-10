@@ -2,28 +2,29 @@ package edu.virginia.cs2110.ghosthunter;
 
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class HomeFragment extends Fragment {
 	
 	public static final int ANIMATION_DURATION = 1000;
 	
 	private TextView newGameText;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_home, parent, false);
 		
-		newGameText = (TextView) findViewById(R.id.new_game);
-		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/crochet_pattern.ttf");
+		newGameText = (TextView) v.findViewById(R.id.new_game);
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/crochet_pattern.ttf");
 		newGameText.setTypeface(font, Typeface.BOLD);
 		
 		newGameText.setOnClickListener(new View.OnClickListener() {
@@ -39,18 +40,20 @@ public class MainActivity extends Activity {
 
 					@Override
 					public void run() {
-						Intent intent = new Intent(MainActivity.this, TestActivity.class);
-						MainActivity.this.startActivity(intent);
+						Intent intent = new Intent(getActivity(), TestActivity.class);
+						HomeFragment.this.startActivity(intent);
 					}
 					
 				}, ANIMATION_DURATION - 100);
 			}
 		});
+		
+		return v;
 	}
 	
 	@TargetApi(11)
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ObjectAnimator animator = ObjectAnimator.ofFloat(newGameText, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
