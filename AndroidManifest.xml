@@ -6,8 +6,10 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
-
+        android:targetSdkVersion="19" />
+    
+    <uses-permission android:name="permission_name"/>
+    
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -28,7 +30,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:noHistory="true" 
-      		android:theme="@style/SplashTheme" >
+      		android:theme="@style/GameTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,21 +40,24 @@
         
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/HomeTheme" >
-        </activity>
+            android:theme="@style/GameTheme" />
+        
+        <activity
+            android:name=".GameActivity"
+            android:theme="@style/GameTheme" />
         
         <activity
             android:name=".TestActivity"
-            android:theme="@style/AppBaseTheme" >
-        </activity>
+            android:theme="@style/AppBaseTheme" />
         
         <meta-data 
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
         
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBixnrnaWqadSgvWpSkzRyNXnxTt95eT9k" />
+        
     </application>
 
 </manifest>

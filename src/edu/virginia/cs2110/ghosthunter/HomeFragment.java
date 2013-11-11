@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
 
 					@Override
 					public void run() {
-						Intent intent = new Intent(getActivity(), TestActivity.class);
+						Intent intent = new Intent(getActivity(), GameActivity.class);
 						HomeFragment.this.startActivity(intent);
 					}
 					

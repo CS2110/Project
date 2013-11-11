@@ -17,13 +17,8 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-    <style name="HomeTheme" parent="android:Theme.NoTitleBar.Fullscreen" >
-        <!-- Add background changes here -->
-        <!--  <item name="android:background">@color/light</item> -->
-    </style>
-    
-    <style name="SplashTheme" parent="android:Theme.NoTitleBar.Fullscreen" >
-        <!-- Add look and feel customizations here -->
+    <style name="GameTheme" parent="android:Theme.NoTitleBar.Fullscreen" >
+        <!-- Look and feel customizations fo here -->
     </style>
 
 </resources>
