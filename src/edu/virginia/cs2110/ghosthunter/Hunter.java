@@ -13,7 +13,6 @@ public class Hunter {
 		 * this.y = ;
 		 */
 	}
-	
 	// Getters and Setters
 	public float getX() {
 		return x;
