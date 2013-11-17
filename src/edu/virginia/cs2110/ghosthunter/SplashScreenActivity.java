@@ -15,7 +15,6 @@ public class SplashScreenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
-		
 		TextView splashText = (TextView) findViewById(R.id.splash_text);
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/crochet_pattern.ttf");
 		splashText.setTypeface(font, Typeface.BOLD);

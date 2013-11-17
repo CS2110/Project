@@ -1,30 +1,26 @@
 package edu.virginia.cs2110.ghosthunter;
 
 public class Hunter {
-	private double coordX;
-	private double coordY;
+	private float x;
+	private float y;
 	private int health;
 	
-	public Hunter() {
-		// coords will = gps coords
+	//Constructor for Hunter. Needs GPS coordinate input 
+	public Hunter() {	
+		this.health = 100;
+		/*
+		 * this.x = ;
+		 * this.y = ;
+		 */
 	}
-	
-	public Hunter(int health) {
-		
-		this.health = health;
-	}
-	
-	
-	
-	
 	
 	// Getters and Setters
-	public double getCoordX() {
-		return coordX;
+	public float getX() {
+		return x;
 	}
 	
-	public double getCoordY() {
-		return coordY;
+	public float getY() {
+		return y;
 	}
 	
 	public int getHealth() {
