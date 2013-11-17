@@ -3,6 +3,7 @@ package edu.virginia.cs2110.ghosthunter;
 import java.util.Random;
 
 public class Ghost {
+
 	private float x, y;
 	private int speed = 10; // need to determine
 	private final int collisionBuffer = 35;
@@ -25,21 +26,18 @@ public class Ghost {
 	 * @return boolean
 	 */
 	public void collision(Ghost ghost, float elapsedTime) {
-	float increment = elapsedTime*collisionBuffer;
-	if (ghost.getX() == x){
-	}	
-		else if (ghost.getX() > x)
-		setX(getX() + increment);
-	else
-		setX(getX() - increment);
-	
-	if (ghost.getY()==y){
-	}
-	else if (ghost.getY() > y)
-		setY(getY() + increment);
-	else
-		setY(getY() - increment);
+		float increment = elapsedTime * collisionBuffer;
+		if (ghost.getX() == x) {
+		} else if (ghost.getX() > x)
+			setX(getX() + increment);
+		else
+			setX(getX() - increment);
 
+		if (ghost.getY() == y) {
+		} else if (ghost.getY() > y)
+			setY(getY() + increment);
+		else
+			setY(getY() - increment);
 	}
 
 	public boolean collision(Hunter hunter) {

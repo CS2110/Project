@@ -11,10 +11,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GameFragment extends Fragment {
 	
@@ -26,7 +23,6 @@ public class GameFragment extends Fragment {
 
 		GoogleMap map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 		// map.setMyLocationEnabled(true);
-		
 		LocationManager lm = (LocationManager) getActivity().getSystemService(GameActivity.LOCATION_SERVICE);
 		Location currentLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		
@@ -39,7 +35,7 @@ public class GameFragment extends Fragment {
 		}
 		
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, ZOOM_FACTOR));
-		
+		/*
 		// Flat markers will rotate when the map is rotated,
 		// and change perspective when the map is tilted.
 		map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost_icon)).position(mapCenter).flat(true).rotation(245));
@@ -48,7 +44,7 @@ public class GameFragment extends Fragment {
 	        
 		// Animate the change in camera view over 2 seconds
 		map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 2000, null);
-		
+		*/
 		return v;
 	}
 	
