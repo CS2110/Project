@@ -13,9 +13,9 @@ public class Ghost {
 	Random rand = new Random();
 
 	public Ghost(Hunter player) {
-		x = rand.nextFloat() + player.getX(); // need to find out how large to
+		// x = rand.nextFloat() + player.getX(); // need to find out how large to
 												// make nextDouble
-		y = rand.nextFloat() + player.getY(); // ^
+		// y = rand.nextFloat() + player.getY(); // ^
 		this.player = player;
 	}
 
@@ -39,10 +39,11 @@ public class Ghost {
 		else
 			setY(getY() - increment);
 	}
-
+	/*
 	public boolean collision(Hunter hunter) {
 		return (distance(hunter) < COLLISION_THRESHOLD);
 	}
+	
 	
 	public void move(float elapsedTime) {
 		float increment = elapsedTime * speed;
@@ -79,7 +80,7 @@ public class Ghost {
 		return Math.sqrt(Math.pow(x - hunter.getX(), 2)
 				+ Math.pow(y - hunter.getY(), 2));
 	}
-
+*/
 	public double distance(Ghost ghost) {
 		return Math.sqrt(Math.pow(x - ghost.getX(), 2)
 				+ Math.pow(y - ghost.getY(), 2));

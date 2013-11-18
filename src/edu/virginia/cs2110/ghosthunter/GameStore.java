@@ -1,11 +1,13 @@
 package edu.virginia.cs2110.ghosthunter;
 
 import android.content.Context;
+import android.location.Location;
 
 public class GameStore {
 	
 	private static GameStore store;
 	
+	@SuppressWarnings("unused")
 	private Context activityContext;
 	private Hunter hunter;
 	
@@ -17,6 +19,17 @@ public class GameStore {
 		if (store == null)
 			store = new GameStore(c);
 		return store;
+	}
+	
+	public void initHunter(Location loc) {
+		if (hunter == null) 
+			hunter = new Hunter(loc);
+	}
+	
+	public void moveHunter(Location loc) {
+		if (hunter != null) {
+			hunter.setLocation(loc);
+		}
 	}
 	
 }

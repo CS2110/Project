@@ -1,29 +1,38 @@
 package edu.virginia.cs2110.ghosthunter;
 
+import android.location.Location;
+
 public class Hunter {
-	private float x;
-	private float y;
+	
+	private double lat;
+	private double lon;
 	private int health;
 	
 	//Constructor for Hunter. Needs GPS coordinate input 
-	public Hunter() {	
+	
+	public Hunter(Location loc) {	
 		this.health = 100;
-		/*
-		 * this.x = ;
-		 * this.y = ;
-		 */
+		this.lat = loc.getLatitude();
+		this.lon = loc.getLongitude();
 	}
 	
 	// Getters and Setters
-	public float getX() {
-		return x;
-	}
-	
-	public float getY() {
-		return y;
-	}
 	
 	public int getHealth() {
 		return health;
 	}
+	
+	public double getLat() {
+		return lat;
+	}
+
+	public double getLon() {
+		return lon;
+	}
+	
+	public void setLocation(Location loc) {
+		this.lat = loc.getLatitude();
+		this.lon = loc.getLongitude();
+	}	
+	
 }
