@@ -63,5 +63,8 @@ public class GameStore {
 			hunter.setLocation(loc);
 		}
 	}
+	public int getHealth() {
+		return hunter.getHealth();
+	}
 
 }

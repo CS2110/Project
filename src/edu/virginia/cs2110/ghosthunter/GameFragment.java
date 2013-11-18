@@ -135,7 +135,7 @@ public class GameFragment extends Fragment implements
 
 		// Flat markers will rotate when the map is rotated,
 		// and change perspective when the map is tilted.
-		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter));
+		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter).title("Health: " + store.getHealth()));
 		
 		ArrayList<LatLng> ghostPos = store.getGhostPostions();
 		for (LatLng pos : ghostPos) {
