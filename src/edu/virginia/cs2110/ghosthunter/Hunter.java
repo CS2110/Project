@@ -7,6 +7,7 @@ public class Hunter {
 	private double lat;
 	private double lon;
 	private int health;
+	private int score;
 	
 	//Constructor for Hunter. Needs GPS coordinate input 
 	
@@ -14,6 +15,7 @@ public class Hunter {
 		this.health = 0;
 		this.lat = loc.getLatitude();
 		this.lon = loc.getLongitude();
+		this.score = 0;
 	}
 	
 	// Getters and Setters
@@ -37,6 +39,10 @@ public class Hunter {
 	
 	public void loseHealth() {
 		health -= 1;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 	
