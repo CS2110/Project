@@ -1,30 +1,32 @@
 package edu.virginia.cs2110.ghosthunter;
 
-import java.util.Random;
 
 public class Ghost {
 
-	private float x, y;
+	private double lat, lon;
+	/*
 	private int speed = 10; // need to determine
 	private final int collisionBuffer = 35;
 	private final double DISTANCE_THRESHOLD = 100;
 	private final double COLLISION_THRESHOLD = 35;
+	*/
 	private Hunter player;
-	Random rand = new Random();
 
-	public Ghost(Hunter player) {
-		// x = rand.nextFloat() + player.getX(); // need to find out how large to
-												// make nextDouble
-		// y = rand.nextFloat() + player.getY(); // ^
+	public Ghost(Hunter player, double initLat, double initLon) {
+		this.lat = initLat;
+		this.lon = initLon;
 		this.player = player;
 	}
 
-	/**
-	 * This method returns true if two ghosts occupy the same space.
-	 * 
-	 * @param ghost
-	 * @return boolean
-	 */
+	public double getLat() {
+		return lat;
+	}
+
+	public double getLon() {
+		return lon;
+	}
+
+	/*
 	public void collision(Ghost ghost, float elapsedTime) {
 		float increment = elapsedTime * collisionBuffer;
 		if (ghost.getX() == x) {
@@ -39,7 +41,7 @@ public class Ghost {
 		else
 			setY(getY() - increment);
 	}
-	/*
+	
 	public boolean collision(Hunter hunter) {
 		return (distance(hunter) < COLLISION_THRESHOLD);
 	}
@@ -80,7 +82,7 @@ public class Ghost {
 		return Math.sqrt(Math.pow(x - hunter.getX(), 2)
 				+ Math.pow(y - hunter.getY(), 2));
 	}
-*/
+
 	public double distance(Ghost ghost) {
 		return Math.sqrt(Math.pow(x - ghost.getX(), 2)
 				+ Math.pow(y - ghost.getY(), 2));
@@ -105,4 +107,5 @@ public class Ghost {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
+	*/
 }
