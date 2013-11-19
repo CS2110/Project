@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -44,6 +45,7 @@ public class GameFragment extends Fragment implements
 	private Location hunterLoc;
 	private LatLng mapCenter;
 	private Marker hunterView;
+	private ArrayList<Marker> ghostViews;
 
 	private GameStore store;
 
@@ -138,11 +140,38 @@ public class GameFragment extends Fragment implements
 		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter));
 		
 		ArrayList<LatLng> ghostPos = store.getGhostPostions();
+		ghostViews = new ArrayList<Marker>();
 		for (LatLng pos : ghostPos) {
-			map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos));
+			ghostViews.add(map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos)));
 		}
 
 		locationClient.requestLocationUpdates(locationRequest, this);
+		
+		new AsyncGame().execute();
+	}
+	
+	private class AsyncGame extends AsyncTask<Void, ArrayList<LatLng>, Void> {
+
+		@Override
+		protected Void doInBackground(Void... args) {
+			while(!isCancelled()) {
+				ArrayList<LatLng> newPositions = store.moveGhosts();
+				try {
+					Thread.sleep(100);
+				} catch(InterruptedException ex) {}
+				publishProgress(newPositions);
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onProgressUpdate(ArrayList<LatLng>... newPositions) {
+			ArrayList<LatLng> positions = newPositions[0];
+			for (int i = 0; i < positions.size(); i++) {
+				ghostViews.get(i).setPosition(positions.get(i));
+			}
+		}
+		
 	}
 
 	/*

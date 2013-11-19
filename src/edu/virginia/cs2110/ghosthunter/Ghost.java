@@ -1,20 +1,26 @@
 package edu.virginia.cs2110.ghosthunter;
 
+import java.util.Random;
+
+import android.location.Location;
+
 
 public class Ghost {
 
+	public static final double MAX_DEGREES_AWAY = 1e-3;
+	
 	private double lat, lon;
-	/*
-	private int speed = 10; // need to determine
-	private final int collisionBuffer = 35;
-	private final double DISTANCE_THRESHOLD = 100;
-	private final double COLLISION_THRESHOLD = 35;
-	*/
+	private double step;
+	// private final int collisionBuffer = 35;
+	private final double DISTANCE_THRESHOLD = 25;
+	// private final double COLLISION_THRESHOLD = 35;
+	
 	private Hunter player;
 
-	public Ghost(Hunter player, double initLat, double initLon) {
-		this.lat = initLat;
-		this.lon = initLon;
+	public Ghost(Hunter player, double step) {
+		this.lat = randLatLon(player.getLat());
+		this.lon = randLatLon(player.getLon());
+		this.step = step;
 		this.player = player;
 	}
 
@@ -25,7 +31,24 @@ public class Ghost {
 	public double getLon() {
 		return lon;
 	}
+	
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
 
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+	
+	private double randLatLon(double hLatLon) {
+		int coefficient = -1;
+		boolean positive = (new Random()).nextBoolean();
+		if (positive)
+			coefficient = 1;
+		double latLon = hLatLon + coefficient * (0.5 * Math.random() + 0.5) * MAX_DEGREES_AWAY;
+		return latLon;
+	}
+	
 	/*
 	public void collision(Ghost ghost, float elapsedTime) {
 		float increment = elapsedTime * collisionBuffer;
@@ -46,43 +69,37 @@ public class Ghost {
 		return (distance(hunter) < COLLISION_THRESHOLD);
 	}
 	
-	
-	public void move(float elapsedTime) {
-		float increment = elapsedTime * speed;
+	*/
+	public void move() {
 		if (distance(player) < DISTANCE_THRESHOLD) {
-			if (player.getX() == x){
-			}	
-				else if (player.getX() > x)
-				setX(getX() + increment);
-			else
-				setX(getX() - increment);
+			if (player.getLat() > getLat())
+				setLat(getLat() + step);
+			else if (player.getLat() < getLat())
+				setLat(getLat() - step);
 			
-			if (player.getY()==y){
-			}
-			else if (player.getY() > y)
-				setY(getY() + increment);
+			if (player.getLon() > getLon())
+				setLon(getLon() + step);
+			else if (player.getLon() < getLon())
+				setLon(getLon() - step);
+		} else {
+			if (Math.random() > 0.5)
+				setLat(getLat() + step);
 			else
-				setY(getY() - increment);
+				setLat(getLat() - step);
+
+			if (Math.random() > 0.5)
+				setLon(getLon() + step);
+			else
+				setLon(getLon() - step);
 		}
-		
-		else{
-			if (Math.random() > 0.5)
-				setX(getX() + increment);
-			else 
-				setX(getX() - increment);
-			
-			if (Math.random() > 0.5)
-				setY(getY() + increment);
-			else 
-				setY(getY() - increment);
-		}	
 	}
 
 	public double distance(Hunter hunter) {
-		return Math.sqrt(Math.pow(x - hunter.getX(), 2)
-				+ Math.pow(y - hunter.getY(), 2));
+		float[] results = new float[3];
+		Location.distanceBetween(this.lat, this.lon, hunter.getLat(), hunter.getLat(), results);
+		return results[0];
 	}
-
+	/*
 	public double distance(Ghost ghost) {
 		return Math.sqrt(Math.pow(x - ghost.getX(), 2)
 				+ Math.pow(y - ghost.getY(), 2));

@@ -9,8 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class GameStore {
 
-	public static final int INIT_NUMBER_GHOSTS = 5;
-	public static final double MAX_DEGREES_AWAY = 1e-3;
+	public static final int INIT_NUMBER_GHOSTS = 10;
+	public static final double GHOST_STEP_SIZE = 1e-5;
 	
 	private static GameStore store;
 
@@ -36,7 +36,7 @@ public class GameStore {
 		if (ghosts == null) {
 			ghosts = new ArrayList<Ghost>();
 			for (int i = 0; i < INIT_NUMBER_GHOSTS; i++) {
-				Ghost g = new Ghost(hunter, randLatLon(loc.getLatitude()), randLatLon(loc.getLongitude()));
+				Ghost g = new Ghost(hunter, 1e-5);
 				ghosts.add(g);
 			}
 		}
@@ -51,17 +51,24 @@ public class GameStore {
 			}
 		}
 		return ghostPositions;
-	}
-
-	private double randLatLon(double hLatLon) {
-		double latLon = hLatLon + (2 * Math.random() - 1) * MAX_DEGREES_AWAY;
-		return latLon;
-	}
+	}	
 
 	public void moveHunter(Location loc) {
 		if (hunter != null) {
 			hunter.setLocation(loc);
 		}
+	}
+	
+	public ArrayList<LatLng> moveGhosts() {
+		ArrayList<LatLng> ghostPositions = new ArrayList<LatLng>();	
+		if (ghosts != null) {
+			for (Ghost g : ghosts) {
+				g.move();
+				LatLng pos = new LatLng(g.getLat(), g.getLon());
+				ghostPositions.add(pos);
+			}
+		}
+		return ghostPositions;
 	}
 
 }
