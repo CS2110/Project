@@ -71,4 +71,14 @@ public class GameStore {
 		return ghostPositions;
 	}
 
+	// we need this so that the game can display health
+	public int getHealth() {
+		return hunter.getHealth();
+	}
+	
+	// game needs this to display score
+	public int getScore() {
+		return hunter.getScore();
+	}
+
 }

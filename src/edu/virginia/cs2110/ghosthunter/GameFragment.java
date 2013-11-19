@@ -76,7 +76,6 @@ public class GameFragment extends Fragment implements
 
 		map = ((SupportMapFragment) getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
-
 		return v;
 	}
 
@@ -137,7 +136,7 @@ public class GameFragment extends Fragment implements
 
 		// Flat markers will rotate when the map is rotated,
 		// and change perspective when the map is tilted.
-		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter));
+		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter).title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
 		
 		ArrayList<LatLng> ghostPos = store.getGhostPostions();
 		ghostViews = new ArrayList<Marker>();
