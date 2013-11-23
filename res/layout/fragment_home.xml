@@ -25,11 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:drawableTop="@drawable/ghost_icon"
         android:padding="16dp"
-        android:text="@string/new_game"
+        android:text="@string/play_game"
         android:textColor="@color/light"
-        android:textSize="24sp"
-        />
+        android:textSize="24sp" />
 	
 </FrameLayout>

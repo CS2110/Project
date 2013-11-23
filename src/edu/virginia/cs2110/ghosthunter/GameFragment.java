@@ -2,12 +2,14 @@ package edu.virginia.cs2110.ghosthunter;
 
 import java.util.ArrayList;
 
+import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -32,12 +34,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GameFragment extends Fragment implements
 		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, GameOverListener {
 
 	public static final int ZOOM_FACTOR = 18;
-	public static final long WAIT = 50;
-	public static final long UPDATE_INTERVAL = 1000;
-	public static final long FASTEST_INTERVAL = 500;
+	public static final int UPDATE_INTERVAL = 1000;
+	public static final int FASTEST_INTERVAL = 500;
+	public static final int ANIMATION_DURATION = 1500;
 
 	private LocationClient locationClient;
 	private LocationRequest locationRequest;
@@ -48,6 +50,7 @@ public class GameFragment extends Fragment implements
 	private ArrayList<Marker> ghostViews;
 
 	private GameStore store;
+	private AsyncGame game;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,9 @@ public class GameFragment extends Fragment implements
 
 		map = ((SupportMapFragment) getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
+		
+		ghostViews = new ArrayList<Marker>();
+		
 		return v;
 	}
 
@@ -115,62 +121,46 @@ public class GameFragment extends Fragment implements
 	 * finishes successfully. At this point, you can request the current
 	 * location or start periodic updates
 	 */
+	@TargetApi(11)
 	@Override
 	public void onConnected(Bundle dataBundle) {
-		// Display the connection status
-		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
-
+		map.clear();
+		ghostViews.clear();
 		hunterLoc = locationClient.getLastLocation();
+		mapCenter = new LatLng(hunterLoc.getLatitude(), hunterLoc.getLongitude());
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, ZOOM_FACTOR));
+		
 		store.initGame(hunterLoc);
-
-		if (hunterLoc != null) {
-			mapCenter = new LatLng(hunterLoc.getLatitude(),
-					hunterLoc.getLongitude());
-		} else {
-			// Set map center to Charlottesville
-			mapCenter = new LatLng(38.0299, -78.4790);
-		}
-
-		map.moveCamera(CameraUpdateFactory
-				.newLatLngZoom(mapCenter, ZOOM_FACTOR));
-
-		// Flat markers will rotate when the map is rotated,
-		// and change perspective when the map is tilted.
-		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter).title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
+		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter)); // .title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
 		
 		ArrayList<LatLng> ghostPos = store.getGhostPostions();
-		ghostViews = new ArrayList<Marker>();
 		for (LatLng pos : ghostPos) {
-			ghostViews.add(map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos)));
+			final Marker ghost = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos));
+			
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				ObjectAnimator animator = ObjectAnimator.ofFloat(ghost, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
+				animator.setDuration(ANIMATION_DURATION);
+				animator.start();
+			}
+			
+			ghostViews.add(ghost);
 		}
 
 		locationClient.requestLocationUpdates(locationRequest, this);
 		
-		new AsyncGame().execute();
+		if (game == null) {
+			game = new AsyncGame(store, ghostViews, getActivity(), this);
+			game.execute();
+		}
 	}
 	
-	private class AsyncGame extends AsyncTask<Void, ArrayList<LatLng>, Void> {
-
-		@Override
-		protected Void doInBackground(Void... args) {
-			while(!isCancelled()) {
-				ArrayList<LatLng> newPositions = store.moveGhosts();
-				try {
-					Thread.sleep(100);
-				} catch(InterruptedException ex) {}
-				publishProgress(newPositions);
-			}
-			return null;
-		}
-		
-		@Override
-		protected void onProgressUpdate(ArrayList<LatLng>... newPositions) {
-			ArrayList<LatLng> positions = newPositions[0];
-			for (int i = 0; i < positions.size(); i++) {
-				ghostViews.get(i).setPosition(positions.get(i));
-			}
-		}
-		
+	@Override
+	public void gameOver() {
+		getActivity().finish();
+	}
+	
+	public void cancel() {
+		game.cancel(true);
 	}
 
 	/*

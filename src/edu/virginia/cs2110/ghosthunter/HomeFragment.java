@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
 						HomeFragment.this.startActivity(intent);
 					}
 					
-				}, ANIMATION_DURATION - 100);
+				}, ANIMATION_DURATION - 200);
 			}
 		});
 		

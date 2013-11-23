@@ -8,20 +8,25 @@ import android.location.Location;
 public class Ghost {
 
 	public static final double MAX_DEGREES_AWAY = 1e-3;
+	private final double CLOSEST_DISTANCE = 40.0;
+	private final double DISTANCE_THRESHOLD = 60.0;
+	private final double COLLISION_THRESHOLD = 5.0;
 	
 	private double lat, lon;
 	private double step;
 	// private final int collisionBuffer = 35;
-	private final double DISTANCE_THRESHOLD = 25;
-	// private final double COLLISION_THRESHOLD = 35;
+	private Random rand;
+	private int randDir;
+	private int randIter;
 	
-	private Hunter player;
+	private Hunter hunter;
 
 	public Ghost(Hunter player, double step) {
-		this.lat = randLatLon(player.getLat());
-		this.lon = randLatLon(player.getLon());
+		rand = new Random();
+		this.randDir = rand.nextInt(4);
 		this.step = step;
-		this.player = player;
+		this.hunter = player;
+		initLocation();
 	}
 
 	public double getLat() {
@@ -40,12 +45,20 @@ public class Ghost {
 		this.lon = lon;
 	}
 	
+	private void initLocation() {
+		setLat(randLatLon(hunter.getLat()));
+		do {
+			setLon(randLatLon(hunter.getLon()));
+		} while(distanceTo(hunter) < CLOSEST_DISTANCE);
+	}
+	
 	private double randLatLon(double hLatLon) {
-		int coefficient = -1;
-		boolean positive = (new Random()).nextBoolean();
-		if (positive)
-			coefficient = 1;
-		double latLon = hLatLon + coefficient * (0.5 * Math.random() + 0.5) * MAX_DEGREES_AWAY;
+		double latLon;
+		if (rand.nextBoolean()) {
+			latLon = hLatLon + rand.nextDouble() * MAX_DEGREES_AWAY;
+		} else {
+			latLon = hLatLon - rand.nextDouble() * MAX_DEGREES_AWAY;
+		}
 		return latLon;
 	}
 	
@@ -64,40 +77,65 @@ public class Ghost {
 		else
 			setY(getY() - increment);
 	}
-	
+	*/
 	public boolean collision(Hunter hunter) {
-		return (distance(hunter) < COLLISION_THRESHOLD);
+		return (distanceTo(hunter) < COLLISION_THRESHOLD);
 	}
 	
-	*/
 	public void move() {
-		if (distance(player) < DISTANCE_THRESHOLD) {
-			if (player.getLat() > getLat())
+		if (distanceTo(hunter) < DISTANCE_THRESHOLD) {
+			if (hunter.getLat() > getLat())
 				setLat(getLat() + step);
-			else if (player.getLat() < getLat())
+			else if (hunter.getLat() < getLat())
 				setLat(getLat() - step);
 			
-			if (player.getLon() > getLon())
+			if (hunter.getLon() > getLon())
 				setLon(getLon() + step);
-			else if (player.getLon() < getLon())
+			else if (hunter.getLon() < getLon())
 				setLon(getLon() - step);
 		} else {
-			if (Math.random() > 0.5)
-				setLat(getLat() + step);
-			else
-				setLat(getLat() - step);
-
-			if (Math.random() > 0.5)
-				setLon(getLon() + step);
-			else
-				setLon(getLon() - step);
+			randomMovement();
 		}
 	}
 
-	public double distance(Hunter hunter) {
-		float[] results = new float[3];
-		Location.distanceBetween(this.lat, this.lon, hunter.getLat(), hunter.getLat(), results);
-		return results[0];
+	public void randomMovement() {
+		double dLat = 0.0, dLon = 0.0;
+		switch (randDir) {
+		case 0:
+			dLat = step;
+			dLon = step;
+			break;
+		case 1:
+			dLat = -step;
+			dLon = step;
+			break;
+		case 2:
+			dLat = step;
+			break;
+		default:
+			dLon = step;
+		}
+		if (randIter / 100 == 0) {
+			setLat(getLat() + 2.5 * dLat);
+			setLon(getLon() + 2.5 * dLon);
+		} else {
+			setLat(getLat() - 2.5 * dLat);
+			setLon(getLon() - 2.5 * dLon);
+		}
+		randIter++;
+		if (randIter >= 200) 
+			randIter = 0;
+	}
+	
+	public double distanceTo(Hunter hunter) {
+		Location a = new Location("A");
+		a.setLatitude(getLat());
+		a.setLongitude(getLon());
+		Location b = new Location("B");
+		b.setLatitude(hunter.getLat());
+		b.setLongitude(hunter.getLon());
+		double d = a.distanceTo(b);
+		return d;
 	}
 	/*
 	public double distance(Ghost ghost) {

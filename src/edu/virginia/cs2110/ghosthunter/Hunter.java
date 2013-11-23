@@ -4,6 +4,8 @@ import android.location.Location;
 
 public class Hunter {
 	
+	public static final int INIT_HEALTH = 1;
+	
 	private double lat;
 	private double lon;
 	private int health;
@@ -12,7 +14,7 @@ public class Hunter {
 	//Constructor for Hunter. Needs GPS coordinate input 
 	
 	public Hunter(Location loc) {	
-		this.health = 0;
+		this.health = INIT_HEALTH;
 		this.lat = loc.getLatitude();
 		this.lon = loc.getLongitude();
 		this.score = 0;
@@ -38,7 +40,7 @@ public class Hunter {
 	}
 	
 	public void loseHealth() {
-		health -= 1;
+		health --;
 	}
 	
 	public int getScore() {
