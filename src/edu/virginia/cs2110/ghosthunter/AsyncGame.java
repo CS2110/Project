@@ -18,11 +18,11 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 	private GameStore store;
 	private ArrayList<Marker> ghostViews;
 	private Context activity;
-	private GameOverListener listener;
+	private GameListener listener;
 	
 	private int nearGhosts;
 	
-	public AsyncGame(GameStore store, ArrayList<Marker> ghostViews, Context activity, GameOverListener listener) {
+	public AsyncGame(GameStore store, ArrayList<Marker> ghostViews, Context activity, GameListener listener) {
 		this.store = store;
 		this.ghostViews = ghostViews;
 		this.activity = activity;
@@ -47,11 +47,12 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 			}
 			
 			// Check for collision
-			if (store.hunterAttacked()) {
+			int g = store.hunterAttacked();
+			if (g >= 0) {
+				publishProgress(GameListener.GHOST, g);
+				publishProgress(GameListener.HUNTER, 0);
 				if (store.hunterKilled()) {
-					break; // Game over
-				} else {
-					// Reduce health and remove corresponding ghostView
+					break;
 				}
 			}
 			
@@ -86,6 +87,10 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 			}
 			if (activity != null)
 				Toast.makeText(activity, o + text, Toast.LENGTH_SHORT).show();
+		} else if (o instanceof String) {
+			String id = (String) o;
+			Integer index = (Integer) updates[1];
+			listener.removeGamePiece(id, index);
 		}
 	}
 	

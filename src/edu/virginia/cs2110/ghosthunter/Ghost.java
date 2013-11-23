@@ -4,6 +4,8 @@ import java.util.Random;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.Marker;
+
 
 public class Ghost {
 
@@ -18,8 +20,9 @@ public class Ghost {
 	private Random rand;
 	private int randDir;
 	private int randIter;
-	
 	private Hunter hunter;
+	
+	private Marker view;
 
 	public Ghost(Hunter player, double step) {
 		rand = new Random();
@@ -43,6 +46,14 @@ public class Ghost {
 
 	public void setLon(double lon) {
 		this.lon = lon;
+	}
+	
+	public Marker getView() {
+		return view;
+	}
+
+	public void setView(Marker view) {
+		this.view = view;
 	}
 	
 	private void initLocation() {

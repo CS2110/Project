@@ -12,6 +12,7 @@ public class GameStore {
 	public static final int INIT_NUMBER_GHOSTS = 10;
 	public static final double GHOST_STEP_SIZE = 5e-7;
 	public static final double PROXIMITY_DISTANCE = 20.0;
+	public static final int SPAWN_RATE = 2;
 	
 	private static GameStore store;
 
@@ -30,6 +31,10 @@ public class GameStore {
 			store = new GameStore(c);
 		return store;
 	}
+	
+	public Hunter getHunter() {
+		return hunter;
+	}
 
 	public void initGame(Location loc) {
 		if (hunter == null)
@@ -43,15 +48,8 @@ public class GameStore {
 		}
 	}
 	
-	public ArrayList<LatLng> getGhostPostions() {
-		ArrayList<LatLng> ghostPositions = new ArrayList<LatLng>();
-		if (ghosts != null) {
-			for (Ghost g : ghosts) {
-				LatLng pos = new LatLng(g.getLat(), g.getLon());
-				ghostPositions.add(pos);
-			}
-		}
-		return ghostPositions;
+	public ArrayList<Ghost> getGhosts() {
+		return ghosts;
 	}	
 
 	public void moveHunter(Location loc) {
@@ -82,20 +80,33 @@ public class GameStore {
 		return near;
 	}
 	
-	public boolean hunterAttacked() {
+	public int hunterAttacked() {
 		for (Ghost g : ghosts) {
 			if (g.collision(hunter)) {
 				hunter.loseHealth();
-				return true;
+				return ghosts.indexOf(g);
 			}
 		}
-		return false;
+		return -1;
 	}
 	
 	public boolean hunterKilled() {
 		return (hunter.getHealth() == 0);
 	}
 	
+	public void killGhost(int index) {
+		ghosts.remove(index);
+	}
+	
+	public Ghost[] spawnGhosts() {
+		Ghost[] g = new Ghost[SPAWN_RATE];
+		for (int i = 0; i < g.length; i++) {
+			g[i] = new Ghost(hunter, GHOST_STEP_SIZE);
+			ghosts.add(g[i]);
+		}
+		return g;
+	}
+
 	public void gameOver() {
 		store = null;
 	}

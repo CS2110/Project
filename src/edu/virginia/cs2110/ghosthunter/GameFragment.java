@@ -11,6 +11,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -34,12 +35,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GameFragment extends Fragment implements
 		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, GameOverListener {
+		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, GameListener {
 
 	public static final int ZOOM_FACTOR = 18;
 	public static final int UPDATE_INTERVAL = 1000;
 	public static final int FASTEST_INTERVAL = 500;
-	public static final int ANIMATION_DURATION = 1500;
+	public static final int ANIMATION_DURATION = 1000;
 
 	private LocationClient locationClient;
 	private LocationRequest locationRequest;
@@ -132,9 +133,12 @@ public class GameFragment extends Fragment implements
 		
 		store.initGame(hunterLoc);
 		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter)); // .title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
+		store.getHunter().setView(hunterView);
 		
-		ArrayList<LatLng> ghostPos = store.getGhostPostions();
-		for (LatLng pos : ghostPos) {
+		ArrayList<Ghost> ghosts = store.getGhosts();
+		for (Ghost g : ghosts) {
+			LatLng pos = new LatLng(g.getLat(), g.getLon());
+			
 			final Marker ghost = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos));
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -144,6 +148,7 @@ public class GameFragment extends Fragment implements
 			}
 			
 			ghostViews.add(ghost);
+			g.setView(ghost);
 		}
 
 		locationClient.requestLocationUpdates(locationRequest, this);
@@ -157,6 +162,57 @@ public class GameFragment extends Fragment implements
 	@Override
 	public void gameOver() {
 		getActivity().finish();
+	}
+	
+	@TargetApi(11)
+	@Override
+	public void removeGamePiece(String id, int index) {
+		if (id.equals(HUNTER)) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				ObjectAnimator animator = ObjectAnimator.ofFloat(hunterView, "alpha", 0f, 1f, 0f, 1f, 0f, 1f);
+				animator.setDuration(ANIMATION_DURATION);
+				animator.start();
+			}
+		} else if (id.equals(GHOST)) {
+			Ghost g = store.getGhosts().get(index);
+			final int i = index;
+			final Marker view = g.getView();
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
+				animator.setDuration(ANIMATION_DURATION);
+				animator.start();
+			}
+			store.killGhost(i);
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					view.remove();
+					if (!store.hunterKilled()) {
+						spawnGhosts();
+					}
+				}
+			}, ANIMATION_DURATION);
+		}
+	}
+	
+	@TargetApi(11)
+	public void spawnGhosts() {
+		// TODO one ghost is not moving after spawn
+		Ghost[] newGhosts = store.spawnGhosts();
+		for (int i = 0; i < newGhosts.length; i++) {
+			LatLng pos = new LatLng(newGhosts[i].getLat(), newGhosts[i].getLon());
+			
+			final Marker ghost = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos));
+			
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				ObjectAnimator animator = ObjectAnimator.ofFloat(ghost, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
+				animator.setDuration(ANIMATION_DURATION);
+				animator.start();
+			}
+			
+			ghostViews.add(ghost);
+			newGhosts[i].setView(ghost);
+		}
 	}
 	
 	public void cancel() {
