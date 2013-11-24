@@ -15,7 +15,7 @@ public class Hunter {
 	
 	private Marker view;
 	
-	//Constructor for Hunter. Needs GPS coordinate input 
+	// Constructor for Hunter. Needs GPS coordinate input 
 	public Hunter(Location loc) {	
 		this.health = INIT_HEALTH;
 		this.lat = loc.getLatitude();

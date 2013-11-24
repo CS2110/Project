@@ -7,6 +7,6 @@
     <string name="school_info">University of Virginia CS 2110 Fall 2013</string>
     <string name="play_game">Play</string>
     <string name="health">Health: </string>
-    <string name="score">Score: </string>
+    <string name="score">Ghosts killed: </string>
 
 </resources>

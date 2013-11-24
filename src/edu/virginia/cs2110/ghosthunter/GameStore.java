@@ -12,7 +12,7 @@ public class GameStore {
 	public static final int INIT_NUMBER_GHOSTS = 10;
 	public static final double GHOST_STEP_SIZE = 5e-7;
 	public static final double PROXIMITY_DISTANCE = 20.0;
-	public static final int SPAWN_RATE = 2;
+	public static final int SPAWN_RATE = 3;
 	
 	private static GameStore store;
 
@@ -113,7 +113,6 @@ public class GameStore {
 	}
 	
 	public void killBone(int index) {
-		killGhost(index);
 		bones.remove(index);
 	}
 	

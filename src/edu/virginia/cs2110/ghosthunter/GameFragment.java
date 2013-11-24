@@ -9,16 +9,20 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +35,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -188,7 +193,7 @@ public class GameFragment extends Fragment implements
 		locationClient.requestLocationUpdates(locationRequest, this);
 		
 		if (game == null) {
-			game = new AsyncGame(store, ghostViews, boneViews, getActivity(), this);
+			game = new AsyncGame(store, ghostViews, getActivity(), this);
 			game.execute();
 		}
 	}
@@ -217,11 +222,15 @@ public class GameFragment extends Fragment implements
 			Ghost g = store.getGhosts().get(index);
 			final int i = index;
 			final Marker view = g.getView();
+			/*
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
 				animator.setDuration(ANIMATION_DURATION);
 				animator.start();
-			}
+			} */
+			
+			floatingMarkerAnimation(view);
+			
 			store.killGhost(i);
 			new Handler().postDelayed(new Runnable() {
 				@Override
@@ -236,12 +245,21 @@ public class GameFragment extends Fragment implements
 			Bone b = store.getBones().get(index);
 			final int i = index;
 			final Marker view = b.getView();
+			/*
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
 				animator.setDuration(ANIMATION_DURATION);
 				animator.start();
-			}
+			} */
+			
+			floatingMarkerAnimation(view);
+			
 			store.killBone(i);
+			
+			int score = store.getScore();
+			String text = getString(R.string.score);
+			hunterScore.setText(text + " " + score);
+			
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -249,6 +267,37 @@ public class GameFragment extends Fragment implements
 				}
 			}, ANIMATION_DURATION);
 		}
+	}
+	
+	public void floatingMarkerAnimation(final Marker m) {
+		final LatLng startPos = m.getPosition();
+
+		final Handler handler = new Handler();
+		final long start = SystemClock.uptimeMillis();
+		Projection proj = map.getProjection();
+
+		Point endPoint = proj.toScreenLocation(startPos);
+		endPoint.y = 0;
+		final LatLng endLatLng = proj.fromScreenLocation(endPoint);
+
+		final Interpolator interpolator = new LinearInterpolator();
+		handler.post(new Runnable() {
+		    @Override
+		    public void run() {
+		        long elapsed = SystemClock.uptimeMillis() - start;
+		        float t = interpolator.getInterpolation((float) elapsed / ANIMATION_DURATION);
+		        double lng = t * endLatLng.longitude + (1 - t) * startPos.longitude;
+		        double lat = t * endLatLng.latitude + (1 - t) * startPos.latitude;
+		        m.setPosition(new LatLng(lat, lng));
+		        m.setAlpha(1 - t);
+		        if (t < 1.0) {
+		            // Post again 10ms later.
+		            handler.postDelayed(this, 10);
+		        } else {
+		            // animation ended
+		        }
+		    }
+		});
 	}
 	
 	@TargetApi(11)

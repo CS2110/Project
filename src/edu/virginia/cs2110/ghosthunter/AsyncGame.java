@@ -17,16 +17,14 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 	
 	private GameStore store;
 	private ArrayList<Marker> ghostViews;
-	private ArrayList<Marker> boneViews;
 	private Context activity;
 	private GameListener listener;
 	
 	private int nearGhosts;
 	
-	public AsyncGame(GameStore store, ArrayList<Marker> ghostViews, ArrayList<Marker> boneViews, Context activity, GameListener listener) {
+	public AsyncGame(GameStore store, ArrayList<Marker> ghostViews, Context activity, GameListener listener) {
 		this.store = store;
 		this.ghostViews = ghostViews;
-		this.boneViews = boneViews;
 		this.activity = activity;
 		this.listener = listener;
 	}
@@ -52,10 +50,18 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 			int g = store.hunterAttacked();
 			if (g >= 0) {
 				publishProgress(GameListener.GHOST, g);
+				publishProgress(GameListener.BONE, g);
 				publishProgress(GameListener.HUNTER, 0);
 				if (store.hunterKilled()) {
 					break;
 				}
+			}
+			
+			// Check for kill
+			int b = store.boneHunted();
+			if (b >= 0) {
+				publishProgress(GameListener.BONE, b);
+				publishProgress(GameListener.GHOST, b);
 			}
 			
 			// Moving ghosts

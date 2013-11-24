@@ -10,8 +10,8 @@ public class Bone {
 	private Ghost ghost;
 	private Hunter hunter;
 	private Random rand;
-	private final double COLLISION_THRESHOLD = 5.0;
-	private final double CLOSEST_DISTANCE = 10;
+	private final double COLLISION_THRESHOLD = 10.0;
+	private final double CLOSEST_DISTANCE = 20.0;
 	public static final double MAX_DEGREES_AWAY = 1e-3;
 	private double lat, lon;
 	private Marker view;
