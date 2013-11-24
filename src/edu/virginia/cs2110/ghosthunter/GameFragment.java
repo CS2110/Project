@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +64,7 @@ public class GameFragment extends Fragment implements
 	private ArrayList<Marker> boneViews;
 	private ProgressBar hunterHealth;
 	private TextView hunterScore;
+	private ImageButton centerLocation;
 	
 	private GameStore store;
 	private AsyncGame game;
@@ -94,7 +96,6 @@ public class GameFragment extends Fragment implements
 
 		map = ((SupportMapFragment) getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
-		map.setBuildingsEnabled(true);
 		
 		hunterHealth = (ProgressBar) v.findViewById(R.id.health_bar);
 		hunterHealth.getProgressDrawable().setColorFilter(Color.argb(255, 52, 124, 23), Mode.MULTIPLY);
@@ -104,6 +105,15 @@ public class GameFragment extends Fragment implements
 		hunterScore = (TextView) v.findViewById(R.id.score);
 		String text = getString(R.string.score);
 		hunterScore.setText(text + " 0");
+		
+		centerLocation = (ImageButton) v.findViewById(R.id.center_location);
+		centerLocation.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mapCenter != null)
+					map.animateCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, ZOOM_FACTOR), ANIMATION_DURATION, null);
+			}
+		});
 		
 		ghostViews = new ArrayList<Marker>();
 		boneViews = new ArrayList<Marker>();

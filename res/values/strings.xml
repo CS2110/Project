@@ -8,5 +8,6 @@
     <string name="play_game">Play</string>
     <string name="health">Health: </string>
     <string name="score">Ghosts killed: </string>
+    <string name="location_content_description">Center</string>
 
 </resources>
