@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -50,7 +54,9 @@ public class GameFragment extends Fragment implements
 	private Marker hunterView;
 	private ArrayList<Marker> ghostViews;
 	private ArrayList<Marker> boneViews;
-
+	private ProgressBar hunterHealth;
+	private TextView hunterScore;
+	
 	private GameStore store;
 	private AsyncGame game;
 
@@ -81,6 +87,16 @@ public class GameFragment extends Fragment implements
 
 		map = ((SupportMapFragment) getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
+		map.setBuildingsEnabled(true);
+		
+		hunterHealth = (ProgressBar) v.findViewById(R.id.health_bar);
+		hunterHealth.getProgressDrawable().setColorFilter(Color.argb(255, 52, 124, 23), Mode.MULTIPLY);
+		hunterHealth.setMax(Hunter.INIT_HEALTH);
+		hunterHealth.setProgress(Hunter.INIT_HEALTH);
+		
+		hunterScore = (TextView) v.findViewById(R.id.score);
+		String text = getString(R.string.score);
+		hunterScore.setText(text + " 0");
 		
 		ghostViews = new ArrayList<Marker>();
 		boneViews = new ArrayList<Marker>();
@@ -191,6 +207,12 @@ public class GameFragment extends Fragment implements
 				animator.setDuration(ANIMATION_DURATION);
 				animator.start();
 			}
+			
+			int health = store.getHealth();
+			if (health <= 1) {
+				hunterHealth.getProgressDrawable().setColorFilter(Color.argb(255, 228, 34, 23), Mode.MULTIPLY);
+			}
+			hunterHealth.setProgress(health);
 		} else if (id.equals(GHOST)) {
 			Ghost g = store.getGhosts().get(index);
 			final int i = index;
@@ -232,8 +254,11 @@ public class GameFragment extends Fragment implements
 	@TargetApi(11)
 	public void spawnGhosts() {
 		// TODO one ghost is not moving after spawn
-		Ghost[] newGhosts = store.spawnGhosts();
-		Bone[] newBones = store.spawnBones();
+		Bone[] newBones = store.spawnGhosts();
+		Ghost[] newGhosts = new Ghost[newBones.length];
+		for (int i = 0; i < newGhosts.length; i++) {
+			newGhosts[i] = newBones[i].getGhost();
+		}
 		for (int i = 0; i < newGhosts.length; i++) {
 			LatLng pos = new LatLng(newGhosts[i].getLat(), newGhosts[i].getLon());
 			LatLng posBone = new LatLng(newBones[i].getLat(), newGhosts[i].getLon());
