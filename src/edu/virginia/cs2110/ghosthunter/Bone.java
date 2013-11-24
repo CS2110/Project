@@ -40,6 +40,10 @@ public Ghost getGhost() {
 public Marker getView() {
 	return view;
 }
+
+public void setView(Marker view) {
+	this.view = view;
+}
 // ----------------------------------------------------------------------------------------------
 
 public Bone(Hunter player) {
@@ -64,9 +68,7 @@ private double randLatLon(double hLatLon) {
 	return latLon;
 }
 
-public void setView(Marker view) {
-	this.view = view;
-}
+
 
 public boolean collision(Hunter hunter) {
 	return (distanceTo(hunter) < COLLISION_THRESHOLD);
