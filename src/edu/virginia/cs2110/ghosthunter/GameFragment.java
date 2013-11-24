@@ -86,6 +86,7 @@ public class GameFragment extends Fragment implements
 
 		map = ((SupportMapFragment) getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
+		map.setBuildingsEnabled(true);
 		
 		hunterHealth = (ProgressBar) v.findViewById(R.id.health_bar);
 		hunterHealth.getProgressDrawable().setColorFilter(Color.argb(255, 52, 124, 23), Mode.MULTIPLY);
@@ -215,7 +216,7 @@ public class GameFragment extends Fragment implements
 		} else if (id.equals(BONE)) {
 			Bone b = store.getBones().get(index);
 			final int i = index;
-			final Marker view = g.getView();
+			final Marker view = b.getView();
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
 				animator.setDuration(ANIMATION_DURATION);

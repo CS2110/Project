@@ -72,15 +72,6 @@ public double distanceTo(Hunter hunter) {
 	return d;
 }
 
-
-
-
-
-
-
-
-
-
 /*
 public Bone (Ghost ghost, Hunter hunter){
 	this.ghost = ghost;
