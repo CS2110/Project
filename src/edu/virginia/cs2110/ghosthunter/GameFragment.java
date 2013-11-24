@@ -49,6 +49,7 @@ public class GameFragment extends Fragment implements
 	private LatLng mapCenter;
 	private Marker hunterView;
 	private ArrayList<Marker> ghostViews;
+	private ArrayList<Marker> boneViews;
 
 	private GameStore store;
 	private AsyncGame game;
@@ -82,7 +83,7 @@ public class GameFragment extends Fragment implements
 				.findFragmentById(R.id.map)).getMap();
 		
 		ghostViews = new ArrayList<Marker>();
-		
+		boneViews = new ArrayList<Marker>();
 		return v;
 	}
 
@@ -127,6 +128,7 @@ public class GameFragment extends Fragment implements
 	public void onConnected(Bundle dataBundle) {
 		map.clear();
 		ghostViews.clear();
+		boneViews.clear();
 		hunterLoc = locationClient.getLastLocation();
 		mapCenter = new LatLng(hunterLoc.getLatitude(), hunterLoc.getLongitude());
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, ZOOM_FACTOR));
@@ -150,11 +152,27 @@ public class GameFragment extends Fragment implements
 			ghostViews.add(ghost);
 			g.setView(ghost);
 		}
+		
+		ArrayList<Bone> bones = store.getBones();
+		for (Bone b : bones) {
+			LatLng pos = new LatLng(b.getLat(), b.getLon());
+			/*
+			final Marker bone = map.addMarker(new MarkerOptions().icon());  // TODO    NNNEEEDDDDSSSSS BITMAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+			
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//				ObjectAnimator animator = ObjectAnimator.ofFloat(ghost, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
+//				animator.setDuration(ANIMATION_DURATION);
+//				animator.start();
+//			}
+			
+			boneViews.add(bone);
+			b.setView(bone);*/
+		}
 
 		locationClient.requestLocationUpdates(locationRequest, this);
 		
 		if (game == null) {
-			game = new AsyncGame(store, ghostViews, getActivity(), this);
+			game = new AsyncGame(store, ghostViews, boneViews, getActivity(), this);
 			game.execute();
 		}
 	}
@@ -215,10 +233,13 @@ public class GameFragment extends Fragment implements
 	public void spawnGhosts() {
 		// TODO one ghost is not moving after spawn
 		Ghost[] newGhosts = store.spawnGhosts();
+		Bone[] newBones = store.spawnBones();
 		for (int i = 0; i < newGhosts.length; i++) {
 			LatLng pos = new LatLng(newGhosts[i].getLat(), newGhosts[i].getLon());
-			
+			LatLng posBone = new LatLng(newBones[i].getLat(), newGhosts[i].getLon());
+			/*
 			final Marker ghost = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos));
+			final Marker bone = map.addMarker(new MarkerOptions().icon());   // TODO NEEEDS BIIITTTMAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				ObjectAnimator animator = ObjectAnimator.ofFloat(ghost, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
@@ -227,7 +248,9 @@ public class GameFragment extends Fragment implements
 			}
 			
 			ghostViews.add(ghost);
+			boneViews.add(bone);
 			newGhosts[i].setView(ghost);
+			newBones[i].setView(bone); */
 		}
 	}
 	

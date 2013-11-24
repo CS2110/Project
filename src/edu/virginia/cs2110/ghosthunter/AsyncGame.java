@@ -17,14 +17,16 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 	
 	private GameStore store;
 	private ArrayList<Marker> ghostViews;
+	private ArrayList<Marker> boneViews;
 	private Context activity;
 	private GameListener listener;
 	
 	private int nearGhosts;
 	
-	public AsyncGame(GameStore store, ArrayList<Marker> ghostViews, Context activity, GameListener listener) {
+	public AsyncGame(GameStore store, ArrayList<Marker> ghostViews, ArrayList<Marker> boneViews, Context activity, GameListener listener) {
 		this.store = store;
 		this.ghostViews = ghostViews;
+		this.boneViews = boneViews;
 		this.activity = activity;
 		this.listener = listener;
 	}

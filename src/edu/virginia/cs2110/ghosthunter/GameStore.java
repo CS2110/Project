@@ -44,7 +44,7 @@ public class GameStore {
 			ghosts = new ArrayList<Ghost>();
 			for (int i = 0; i < INIT_NUMBER_GHOSTS; i++) {
 				Ghost g = new Ghost(hunter, GHOST_STEP_SIZE);
-				Bone b = new Bone(hunter, g);
+				Bone b = new Bone(hunter);
 				ghosts.add(g);
 				bones.add(b);
 			}
@@ -124,9 +124,19 @@ public class GameStore {
 		Ghost[] g = new Ghost[SPAWN_RATE];
 		for (int i = 0; i < g.length; i++) {
 			g[i] = new Ghost(hunter, GHOST_STEP_SIZE);
+			
 			ghosts.add(g[i]);
 		}
 		return g;
+	}
+	
+	public Bone[] spawnBones() {
+		Bone[] b = new Bone[SPAWN_RATE];
+		for (int i = 0; i < b.length; i++) {
+			b[i] = new Bone(hunter);
+			bones.add(b[i]);
+		}
+		return b;
 	}
 
 	public void gameOver() {

@@ -2,6 +2,8 @@ package edu.virginia.cs2110.ghosthunter;
 
 import java.util.Random;
 
+import com.google.android.gms.maps.model.Marker;
+
 import android.location.Location;
 
 public class Bone {
@@ -12,6 +14,7 @@ private final double COLLISION_THRESHOLD = 5.0;
 private final double CLOSEST_DISTANCE = 10;
 public static final double MAX_DEGREES_AWAY = 1e-3;
 private double lat, lon;
+private Marker view;
 
 //Getters and Setters
 public double getLat() {
@@ -33,9 +36,13 @@ public void setLon(double lon) {
 public Ghost getGhost() {
 	return ghost;
 }
+
+public Marker getView() {
+	return view;
+}
 // ----------------------------------------------------------------------------------------------
 
-public Bone(Hunter player, Ghost ghost) {
+public Bone(Hunter player) {
 	rand = new Random();
 	initLocation();
 }
@@ -55,6 +62,10 @@ private double randLatLon(double hLatLon) {
 		latLon = hLatLon - rand.nextDouble() * MAX_DEGREES_AWAY;
 	}
 	return latLon;
+}
+
+public void setView(Marker view) {
+	this.view = view;
 }
 
 public boolean collision(Hunter hunter) {
