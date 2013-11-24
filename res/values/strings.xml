@@ -6,5 +6,7 @@
     <string name="developer_info">Developers: Jeffrey Cannon, Aki Gao, Gene Rhee, Adrian Dan</string>
     <string name="school_info">University of Virginia CS 2110 Fall 2013</string>
     <string name="play_game">Play</string>
+    <string name="health">Health: </string>
+    <string name="score">Score: </string>
 
 </resources>
