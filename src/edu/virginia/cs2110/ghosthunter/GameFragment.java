@@ -132,7 +132,7 @@ public class GameFragment extends Fragment implements
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, ZOOM_FACTOR));
 		
 		store.initGame(hunterLoc);
-		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.hunter)).position(mapCenter)); // .title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
+		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.alt_hunter)).position(mapCenter)); // .title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
 		store.getHunter().setView(hunterView);
 		
 		ArrayList<Ghost> ghosts = store.getGhosts();
