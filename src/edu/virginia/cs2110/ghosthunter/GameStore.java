@@ -40,7 +40,7 @@ public class GameStore {
 	public void initGame(Location loc) {
 		if (hunter == null)
 			hunter = new Hunter(loc);
-		if (ghosts == null) {
+		if (ghosts == null && bones == null) {
 			ghosts = new ArrayList<Ghost>();
 			bones = new ArrayList<Bone>();
 			for (int i = 0; i < INIT_NUMBER_GHOSTS; i++) {

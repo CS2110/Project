@@ -157,7 +157,7 @@ public class GameFragment extends Fragment implements
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, ZOOM_FACTOR));
 		
 		store.initGame(hunterLoc);
-		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.alt_hunter)).position(mapCenter)); // .title("Health: " + store.getHealth() + "\nScore: " + store.getScore()));
+		hunterView = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.alt_hunter)).position(mapCenter));
 		store.getHunter().setView(hunterView);
 		
 		ArrayList<Ghost> ghosts = store.getGhosts();
@@ -231,6 +231,7 @@ public class GameFragment extends Fragment implements
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
+					ghostViews.remove(view);
 					view.remove();
 					if (!store.hunterKilled()) {
 						spawnGhosts();
@@ -253,6 +254,7 @@ public class GameFragment extends Fragment implements
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
+					ghostViews.remove(view);
 					view.remove();
 				}
 			}, ANIMATION_DURATION);
@@ -299,15 +301,19 @@ public class GameFragment extends Fragment implements
 		}
 		for (int i = 0; i < newGhosts.length; i++) {
 			LatLng pos = new LatLng(newGhosts[i].getLat(), newGhosts[i].getLon());
-			LatLng posBone = new LatLng(newBones[i].getLat(), newGhosts[i].getLon());
+			LatLng posBone = new LatLng(newBones[i].getLat(), newBones[i].getLon());
 			
 			final Marker ghost = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ghost)).position(pos));
 			final Marker bone = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.grave)).position(posBone));
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				ObjectAnimator animator = ObjectAnimator.ofFloat(ghost, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
-				animator.setDuration(ANIMATION_DURATION);
-				animator.start();
+				ObjectAnimator ghostAnimator = ObjectAnimator.ofFloat(ghost, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
+				ghostAnimator.setDuration(ANIMATION_DURATION);
+				ghostAnimator.start();
+				
+				ObjectAnimator boneAnimator = ObjectAnimator.ofFloat(bone, "alpha", 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f);
+				boneAnimator.setDuration(ANIMATION_DURATION);
+				boneAnimator.start();
 			}
 			
 			ghostViews.add(ghost);

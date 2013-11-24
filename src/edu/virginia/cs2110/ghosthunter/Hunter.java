@@ -51,7 +51,7 @@ public class Hunter {
 	}
 	
 	public void increaseScore() {
-		score += 1;
+		score ++;
 	}
 	
 	public Marker getView() {
