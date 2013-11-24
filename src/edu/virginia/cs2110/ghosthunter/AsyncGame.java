@@ -108,8 +108,9 @@ public class AsyncGame extends AsyncTask<Void, Object, Void> {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				int score = store.getScore();
 				store.gameOver();
-				listener.gameOver();
+				listener.gameOver(score);
 			}
 		}, POST_GAME_DELAY);
 	}

@@ -76,7 +76,8 @@ public class GameFragment extends Fragment implements
 		 * Create a new location client, using the enclosing class to handle
 		 * callbacks.
 		 */
-		store = GameStore.get(getActivity());
+		int level = getActivity().getIntent().getIntExtra(GameActivity.LEVEL, HomeFragment.DIFFICULTY_EASY);
+		store = GameStore.get(getActivity(), level);
 		locationClient = new LocationClient(getActivity(), this, this);
 
 		// Create the LocationRequest object
@@ -211,7 +212,10 @@ public class GameFragment extends Fragment implements
 	}
 	
 	@Override
-	public void gameOver() {
+	public void gameOver(int score) {
+		Intent data = new Intent();
+		data.putExtra(GameActivity.SCORE, score);
+		getActivity().setResult(GameActivity.RESULT_OK, data);
 		getActivity().finish();
 	}
 	
@@ -334,6 +338,9 @@ public class GameFragment extends Fragment implements
 	}
 	
 	public void cancel() {
+		Intent data = new Intent();
+		data.putExtra(GameActivity.SCORE, store.getScore());
+		getActivity().setResult(GameActivity.RESULT_OK, data);
 		game.cancel(true);
 	}
 

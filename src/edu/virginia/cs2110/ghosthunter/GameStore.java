@@ -10,11 +10,13 @@ import com.google.android.gms.maps.model.LatLng;
 public class GameStore {
 
 	public static final int INIT_NUMBER_GHOSTS = 10;
-	public static final double GHOST_STEP_SIZE = 5e-7;
 	public static final double PROXIMITY_DISTANCE = 20.0;
-	public static final int SPAWN_RATE = 3;
+	
+	public static double GHOST_STEP_SIZE = 5e-7;
+	public static int SPAWN_RATE = 2;
 	
 	private static GameStore store;
+	private int level;
 
 	@SuppressWarnings("unused")
 	private Context applicationContext;
@@ -22,14 +24,17 @@ public class GameStore {
 	private ArrayList<Ghost> ghosts;
 	private ArrayList<Bone> bones;
 
-	private GameStore(Context c) {
-		applicationContext = c.getApplicationContext(); // Keeps this object alive as long as the Activity
-								// is alive
+	private GameStore(Context c, int level) {
+		applicationContext = c.getApplicationContext(); // Keeps this object alive
+		this.level = level;
 	}
 
-	public static GameStore get(Context c) {
-		if (store == null)
-			store = new GameStore(c);
+	public static GameStore get(Context c, int level) {
+		if (store == null) {
+			GHOST_STEP_SIZE *= level;
+			SPAWN_RATE += level;
+			store = new GameStore(c, level);
+		}
 		return store;
 	}
 	

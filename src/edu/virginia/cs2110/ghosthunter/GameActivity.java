@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 public class GameActivity extends SingleFragmentActivity {
 	
+	public static final String SCORE = "score";
+	public static final String LEVEL = "level";
+	
 	private GameFragment fragment;
 	private boolean doubleBackToExitPressedOnce;
 	

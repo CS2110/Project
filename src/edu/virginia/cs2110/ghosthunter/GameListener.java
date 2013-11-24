@@ -5,6 +5,6 @@ public interface GameListener {
 	public static final String GHOST = "ghost";
 	public static final String BONE = "bone";
 	
-	public void gameOver();
+	public void gameOver(int score);
 	public void removeGamePiece(String id, int index);
 }
