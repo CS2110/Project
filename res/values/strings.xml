@@ -10,5 +10,9 @@
     <string name="score">Ghosts killed:</string>
     <string name="location_content_description">Center</string>
     <string name="high_score_label">High Score</string>
+    <string name="level_picker_title">Difficulty Level:</string>
+    <string name="easy_level">Easy</string>
+    <string name="medium_level">Medium</string>
+    <string name="hard_level">Hard</string>
 
 </resources>
