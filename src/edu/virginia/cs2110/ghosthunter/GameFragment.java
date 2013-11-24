@@ -46,6 +46,8 @@ public class GameFragment extends Fragment implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, GameListener {
 
+	// TODO sometimes incorrect ghosts and coffins are removed
+	
 	public static final int ZOOM_FACTOR = 18;
 	public static final int UPDATE_INTERVAL = 1000;
 	public static final int FASTEST_INTERVAL = 500;
@@ -222,12 +224,6 @@ public class GameFragment extends Fragment implements
 			Ghost g = store.getGhosts().get(index);
 			final int i = index;
 			final Marker view = g.getView();
-			/*
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
-				animator.setDuration(ANIMATION_DURATION);
-				animator.start();
-			} */
 			
 			floatingMarkerAnimation(view);
 			
@@ -245,12 +241,6 @@ public class GameFragment extends Fragment implements
 			Bone b = store.getBones().get(index);
 			final int i = index;
 			final Marker view = b.getView();
-			/*
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
-				animator.setDuration(ANIMATION_DURATION);
-				animator.start();
-			} */
 			
 			floatingMarkerAnimation(view);
 			
@@ -302,7 +292,6 @@ public class GameFragment extends Fragment implements
 	
 	@TargetApi(11)
 	public void spawnGhosts() {
-		// TODO one ghost is not moving after spawn
 		Bone[] newBones = store.spawnGhosts();
 		Ghost[] newGhosts = new Ghost[newBones.length];
 		for (int i = 0; i < newGhosts.length; i++) {
