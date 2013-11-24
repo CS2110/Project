@@ -212,6 +212,16 @@ public class GameFragment extends Fragment implements
 					}
 				}
 			}, ANIMATION_DURATION);
+		} else if (id.equals(BONE)) {
+			Bone b = store.getBones().get(index);
+			final int i = index;
+			final Marker view = g.getView();
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0f);
+				animator.setDuration(ANIMATION_DURATION);
+				animator.start();
+			}
+			
 		}
 	}
 	
