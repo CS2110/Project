@@ -12,8 +12,8 @@ public class GameStore {
 	public static final int INIT_NUMBER_GHOSTS = 10;
 	public static final double PROXIMITY_DISTANCE = 20.0;
 	
-	public static double GHOST_STEP_SIZE = 5e-7;
-	public static int SPAWN_RATE = 2;
+	private static final double GHOST_STEP_SIZE = 3e-7;
+	private static final int SPAWN_RATE = 1;
 	
 	private static GameStore store;
 	private int level;
@@ -31,8 +31,6 @@ public class GameStore {
 
 	public static GameStore get(Context c, int level) {
 		if (store == null) {
-			GHOST_STEP_SIZE *= level;
-			SPAWN_RATE += level;
 			store = new GameStore(c, level);
 		}
 		return store;
@@ -49,7 +47,7 @@ public class GameStore {
 			ghosts = new ArrayList<Ghost>();
 			bones = new ArrayList<Bone>();
 			for (int i = 0; i < INIT_NUMBER_GHOSTS; i++) {
-				Ghost g = new Ghost(hunter, GHOST_STEP_SIZE);
+				Ghost g = new Ghost(hunter, level * GHOST_STEP_SIZE);
 				Bone b = new Bone(hunter, g);
 				ghosts.add(g);
 				bones.add(b);
@@ -126,9 +124,9 @@ public class GameStore {
 	}
 	
 	public Bone[] spawnGhosts() {
-		Bone[] b = new Bone[SPAWN_RATE];
+		Bone[] b = new Bone[level + SPAWN_RATE];
 		for (int i = 0; i < b.length; i++) {
-			Ghost g = new Ghost(hunter, GHOST_STEP_SIZE);
+			Ghost g = new Ghost(hunter, level * GHOST_STEP_SIZE);
 			b[i] = new Bone(hunter, g);
 			bones.add(b[i]);
 			ghosts.add(g);

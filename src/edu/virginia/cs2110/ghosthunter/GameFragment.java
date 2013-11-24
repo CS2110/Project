@@ -46,8 +46,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class GameFragment extends Fragment implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, GameListener {
-
-	// TODO sometimes incorrect ghosts and coffins are removed
 	
 	public static final int ZOOM_FACTOR = 18;
 	public static final int UPDATE_INTERVAL = 1000;
@@ -215,7 +213,7 @@ public class GameFragment extends Fragment implements
 	public void gameOver(int score) {
 		Intent data = new Intent();
 		data.putExtra(GameActivity.SCORE, score);
-		getActivity().setResult(GameActivity.RESULT_OK, data);
+		getActivity().setResult(Activity.RESULT_OK, data);
 		getActivity().finish();
 	}
 	
@@ -340,7 +338,7 @@ public class GameFragment extends Fragment implements
 	public void cancel() {
 		Intent data = new Intent();
 		data.putExtra(GameActivity.SCORE, store.getScore());
-		getActivity().setResult(GameActivity.RESULT_OK, data);
+		getActivity().setResult(Activity.RESULT_OK, data);
 		game.cancel(true);
 	}
 

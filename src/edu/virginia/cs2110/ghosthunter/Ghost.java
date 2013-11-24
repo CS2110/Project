@@ -73,22 +73,6 @@ public class Ghost {
 		return latLon;
 	}
 	
-	/*
-	public void collision(Ghost ghost, float elapsedTime) {
-		float increment = elapsedTime * collisionBuffer;
-		if (ghost.getX() == x) {
-		} else if (ghost.getX() > x)
-			setX(getX() + increment);
-		else
-			setX(getX() - increment);
-
-		if (ghost.getY() == y) {
-		} else if (ghost.getY() > y)
-			setY(getY() + increment);
-		else
-			setY(getY() - increment);
-	}
-	*/
 	public boolean collision(Hunter hunter) {
 		return (distanceTo(hunter) < COLLISION_THRESHOLD);
 	}
@@ -148,30 +132,5 @@ public class Ghost {
 		double d = a.distanceTo(b);
 		return d;
 	}
-	/*
-	public double distance(Ghost ghost) {
-		return Math.sqrt(Math.pow(x - ghost.getX(), 2)
-				+ Math.pow(y - ghost.getY(), 2));
-	}
-	// Getters and Setters
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public void setY(float y) {
-		this.y = y;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-	*/
+	
 }
