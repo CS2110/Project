@@ -18,6 +18,8 @@ public class HomeFragment extends Fragment {
 	public static final int ANIMATION_DURATION = 1000;
 	
 	private TextView newGameText;
+	private TextView highScoreLabel;
+	private TextView highScoreValue;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -47,6 +49,12 @@ public class HomeFragment extends Fragment {
 				}, ANIMATION_DURATION - 200);
 			}
 		});
+		
+		highScoreLabel = (TextView) v.findViewById(R.id.high_score_label);
+		highScoreLabel.setTypeface(font, Typeface.BOLD);
+		
+		highScoreValue = (TextView) v.findViewById(R.id.high_score);
+		highScoreValue.setText("0");
 		
 		return v;
 	}
