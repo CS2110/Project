@@ -20,6 +20,7 @@ public class GameStore {
 	private Context applicationContext;
 	private Hunter hunter;
 	private ArrayList<Ghost> ghosts;
+	private ArrayList<Bone> bones;
 
 	private GameStore(Context c) {
 		applicationContext = c.getApplicationContext(); // Keeps this object alive as long as the Activity
@@ -43,14 +44,20 @@ public class GameStore {
 			ghosts = new ArrayList<Ghost>();
 			for (int i = 0; i < INIT_NUMBER_GHOSTS; i++) {
 				Ghost g = new Ghost(hunter, GHOST_STEP_SIZE);
+				Bone b = new Bone(hunter, g);
 				ghosts.add(g);
+				bones.add(b);
 			}
 		}
 	}
 	
 	public ArrayList<Ghost> getGhosts() {
 		return ghosts;
-	}	
+	}
+	
+	public ArrayList<Bone> getBones() {
+		return bones;
+	}
 
 	public void moveHunter(Location loc) {
 		if (hunter != null) {
@@ -90,8 +97,23 @@ public class GameStore {
 		return -1;
 	}
 	
+	public int boneHunted() {
+		for (Bone b : bones) {
+			if (b.collision(hunter)) {
+				hunter.increaseScore();
+				return bones.indexOf(b);
+			}
+		}
+		return -1;
+	}
+	
 	public boolean hunterKilled() {
 		return (hunter.getHealth() == 0);
+	}
+	
+	public void killBone(int index) {
+		killGhost(index);
+		bones.remove(index);
 	}
 	
 	public void killGhost(int index) {
